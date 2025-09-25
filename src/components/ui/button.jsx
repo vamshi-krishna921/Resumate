@@ -35,7 +35,7 @@ const buttonVariants = cva(
 )
 
 function Button({
-  className,
+  className = "bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED] font-body cursor-pointer hover:scale-107 active:scale-95 transition-all text-white font-[400px]",
   variant,
   size,
   asChild = false,

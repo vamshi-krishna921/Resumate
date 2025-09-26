@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
@@ -122,9 +121,14 @@
 }
 
 .font-heading {
-  font-family: 'Playfair Display', serif;
+  font-family: "Inter", sans-serif;
 }
 
 .font-body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Playfair Display", serif;
+}
+
+.text-clip {
+  @apply bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED] 
+               bg-clip-text text-transparent;
 }

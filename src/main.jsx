@@ -32,7 +32,6 @@ const root = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <ClerkProvider publishableKey={publishKey}>
     <RouterProvider router={root}>
-      <App />
     </RouterProvider>
   </ClerkProvider>
 );

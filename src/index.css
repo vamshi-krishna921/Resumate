@@ -132,3 +132,6 @@
   @apply bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED] 
                bg-clip-text text-transparent;
 }
+.bg-color{
+  @apply bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED];
+}

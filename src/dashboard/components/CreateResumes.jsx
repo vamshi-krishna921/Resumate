@@ -13,12 +13,14 @@ import { v4 as uuidv4 } from "uuid";
 import React, { useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { createResume } from "./../../../service/GlobalAPIs";
+import { useNavigate } from "react-router-dom";
 
 function CreateResumes() {
   const [openDialogBox, setOpenDialogBox] = useState(false);
   const [resumeTitle, setResumeTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
+  const navigate = useNavigate();
 
   //* Function to handle creating a new resume
   const handleCreateResume = () => {
@@ -37,6 +39,7 @@ function CreateResumes() {
         setResumeTitle("");
         setOpenDialogBox(false);
         setLoading(false);
+        navigate("/dashboard/templates");
       })
       .catch((err) => {
         console.error("Error creating resume:", err);

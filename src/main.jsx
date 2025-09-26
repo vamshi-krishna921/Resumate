@@ -7,6 +7,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./home";
 import Dashboard from "./dashboard";
 import { ClerkProvider } from "@clerk/clerk-react";
+import Templates from "./dashboard/components/Templates";
+import Edit from "./dashboard/resume/[resumeId]/edit";
 
 const publishKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -18,6 +20,14 @@ const root = createBrowserRouter([
         path: "/dashboard",
         element: <Dashboard />,
       },
+      {
+        path: "/dashboard/templates",
+        element: <Templates />,
+      },
+      {
+        path: "/dashboard/templates/:templateId/:resumeId/edit",
+        element: <Edit/>
+      }
     ],
   },
   {

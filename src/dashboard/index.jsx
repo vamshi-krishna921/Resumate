@@ -1,5 +1,5 @@
 import React from "react";
-import YourResumes from "./components/CreateResumes";
+import CreateResumes from "./components/CreateResumes";
 
 function Dashboard() {
   return (
@@ -12,7 +12,7 @@ function Dashboard() {
         Build a job-ready resume that stands out using AI.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 mt-4 gap-5 md:gap-6 lg:gap-9 md:mt-6">
-        <YourResumes />
+        <CreateResumes />
       </div>
     </div>
   );

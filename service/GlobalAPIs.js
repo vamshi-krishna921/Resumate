@@ -11,4 +11,5 @@ const axiosInstance = axios.create({
 });
 
 export const createResume = (data) => axiosInstance.post("/user-resumes", {data});
+export const getResumes = () => axiosInstance.get("/user-resumes");
 export default axiosInstance;

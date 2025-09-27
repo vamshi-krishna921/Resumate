@@ -10,11 +10,14 @@ const axiosInstance = axios.create({
   },
 });
 
-// Create a new resume
+//* Create a new resume
 export const createResume = (data) => axiosInstance.post("/resumes", { data });
 
-// Get resumes by user email
+//* Get resumes by user email
 export const getResumes = (userEmail) =>
   axiosInstance.get(`/resumes?filters[userEmail][$eq]=${userEmail}`);
 
+//* Get resume by ID
+export const getResumeById = (resumeId) =>
+  axiosInstance.get(`/resumes?filters[resumeId][$eq]=${resumeId}`);
 export default axiosInstance;

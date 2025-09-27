@@ -14,6 +14,8 @@ import React, { useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { createResume } from "./../../../service/GlobalAPIs";
 import { useNavigate } from "react-router-dom";
+import professionalTemplate from "../../assets/template1.avif";
+import fresherTemplate from "../../assets/Fresher.jpeg";
 
 function CreateResumes() {
   const [openDialogBox, setOpenDialogBox] = useState(false);
@@ -22,12 +24,10 @@ function CreateResumes() {
   const { user } = useUser();
   const navigate = useNavigate();
   const templates = [
-    { id: 0, name: "Modern" },
-    { id: 1, name: "Minimalist" },
-    { id: 2, name: "Creative" },
+    { id: 1, name: "Fresher", img: fresherTemplate },
+    { id: 2, name: "Professional", img: professionalTemplate },
   ];
   const [selectedTemplate, setSelectedTemplate] = useState(templates[0].id);
-  console.log("Selected Template ID:", selectedTemplate);
   //* Function to handle creating a new resume
   const handleCreateResume = () => {
     setLoading(true);
@@ -42,7 +42,6 @@ function CreateResumes() {
 
     createResume(data)
       .then((res) => {
-        console.log("Resume created successfully:", res.data);
         setResumeTitle("");
         setSelectedTemplate(templates[0].id);
         setOpenDialogBox(false);
@@ -50,7 +49,6 @@ function CreateResumes() {
         navigate(`/dashboard/resume/${id}/edit`);
       })
       .catch((err) => {
-        console.error("Error creating resume:", err);
         setLoading(false);
       });
   };
@@ -69,28 +67,42 @@ function CreateResumes() {
           <DialogHeader>
             <DialogTitle>Create your new resume</DialogTitle>
             <DialogDescription>
-              <div className="text-lg font-semibold font-body">Enter title</div>
+              <div className="text-lg text-start font-semibold font-body">
+                Enter title
+              </div>
               <Input
                 placeholder="Ex: Frontend resume"
                 className="mt-2 text-black"
                 value={resumeTitle}
                 onChange={(e) => setResumeTitle(e.target.value)}
               />
+
+              {/* Select templates */}
               <div className="mt-4">
                 <div className="text-lg font-semibold font-body mb-2">
                   Select template
                 </div>
-                <div className="flex gap-3 flex-wrap focus:border-blue-600">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {templates.map((template) => (
-                    <Button
+                    <div
                       key={template.id}
-                      variant={
-                        selectedTemplate === template.id ? "default" : "outline"
-                      }
                       onClick={() => setSelectedTemplate(template.id)}
+                      className={`cursor-pointer border-2 rounded-lg overflow-hidden transition 
+                        ${
+                          selectedTemplate === template.id
+                            ? "border-blue-500 ring-2 ring-blue-300"
+                            : "border-gray-300"
+                        }`}
                     >
-                      {template.name}
-                    </Button>
+                      <img
+                        src={template.img}
+                        alt={template.name}
+                        className="w-full h-32 object-cover"
+                      />
+                      <div className="p-2 text-center font-medium text-sm">
+                        {template.name}
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>

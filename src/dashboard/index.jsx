@@ -22,6 +22,7 @@ function Dashboard() {
         console.error("Error fetching prevResumes: ", err);
       });
   };
+  
   return (
     <div className="p-8 md:px-16 lg:px-32 font-body">
       <h1 className="font-heading text-3xl font-extrabold text-clip">
@@ -33,6 +34,8 @@ function Dashboard() {
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  mt-4 gap-5 md:gap-6 lg:gap-9 md:mt-6">
         <CreateResumes />
+
+        {/* Display previous resumes */}
         {prevResumes.length > 0 &&
           prevResumes.map((resume, index) => (
             <PrevResumes resume={resume} key={index} />

@@ -1,15 +1,17 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser, UserButton } from "@clerk/clerk-react";
 
 function Header() {
   const { user, isSignedIn } = useUser();
+  const navigate = useNavigate();
 
   return (
     <div className="flex justify-between items-center p-3 shadow shadow-gray-300">
       {/* Logo */}
-      <div className="w-[60px] h-[60px] rounded-full shadow shadow-gray-500 overflow-hidden">
+      <div className="w-[60px] h-[60px] rounded-full shadow shadow-gray-500 overflow-hidden"
+      onClick={() => navigate("/dashboard")}>
         <img
           src="/logo.webp"
           alt="Logo"

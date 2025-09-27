@@ -7,7 +7,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./home";
 import Dashboard from "./dashboard";
 import { ClerkProvider } from "@clerk/clerk-react";
-import Templates from "./dashboard/components/Templates";
 import Edit from "./dashboard/resume/[resumeId]/edit";
 
 const publishKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -21,13 +20,9 @@ const root = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "/dashboard/templates",
-        element: <Templates />,
+        path: "/dashboard/resume/:resumeId/edit",
+        element: <Edit />,
       },
-      {
-        path: "/dashboard/templates/:templateId/:resumeId/edit",
-        element: <Edit/>
-      }
     ],
   },
   {
@@ -41,7 +36,6 @@ const root = createBrowserRouter([
 ]);
 createRoot(document.getElementById("root")).render(
   <ClerkProvider publishableKey={publishKey}>
-    <RouterProvider router={root}>
-    </RouterProvider>
+    <RouterProvider router={root}></RouterProvider>
   </ClerkProvider>
 );

@@ -10,6 +10,11 @@ const axiosInstance = axios.create({
   },
 });
 
-export const createResume = (data) => axiosInstance.post("/user-resumes", {data});
-export const getResumes = () => axiosInstance.get("/user-resumes");
+// Create a new resume
+export const createResume = (data) => axiosInstance.post("/resumes", { data });
+
+// Get resumes by user email
+export const getResumes = (userEmail) =>
+  axiosInstance.get(`/resumes?filters[userEmail][$eq]=${userEmail}`);
+
 export default axiosInstance;

@@ -39,7 +39,7 @@ function CreateResumes() {
         setResumeTitle("");
         setOpenDialogBox(false);
         setLoading(false);
-        navigate("/dashboard/templates");
+        navigate(`/dashboard/resume/`+resume.resumeId+"/edit");
       })
       .catch((err) => {
         console.error("Error creating resume:", err);

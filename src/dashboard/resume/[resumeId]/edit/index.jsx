@@ -28,9 +28,9 @@ function Edit() {
     <ResumeContext.Provider value={{ resumeContent, setResumeContent }}>
       <div className="grid grid-cols-1 md:grid-cols-2 mt-4 p-12 gap-12">
         {/* Form component */}
-        <Form />
+        <Form templateId={templateId} />
         {/* Preview component */}
-        <Preview templateId={templateId}/>
+        <Preview templateId={templateId} />
       </div>
     </ResumeContext.Provider>
   );

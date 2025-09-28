@@ -25,7 +25,7 @@ function PersonalDetails({ resumeContent }) {
   return (
     <>
       {/* Personal Details Top section */}
-      <div className="font-resume">
+      <div className="font-resume my-4">
         <h1 className="font-bold text-xl text-center">
           {resumeContent?.firstName} {resumeContent?.lastName}
         </h1>

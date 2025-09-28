@@ -54,8 +54,7 @@ export default {
       endDate: "Dec:2019",
       degree: "Master",
       major: "Computer Science",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud",
+      cgpa: 9.9,
     },
     {
       id: 2,
@@ -64,8 +63,27 @@ export default {
       endDate: "Dec:2019",
       degree: "Master",
       major: "Computer Science",
+      cgpa: 9.9,
+    },
+  ],
+  projects: [
+    {
+      id: 1,
+      title: "React Native In-house Organization Application",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud",
+      startDate: "Jan 2021",
+      endDate: "",
+      currentlyWorking: false,
+    },
+    {
+      id: 2,
+      title: "React Native In-house Organization Application",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud",
+      startDate: "Jan 2021",
+      endDate: "",
+      currentlyWorking: false,
     },
   ],
   skills: [
@@ -88,6 +106,21 @@ export default {
       id: 1,
       name: "React Native",
       rating: 100,
+    },
+    
+  ],
+  achievements: [
+    {
+      id: 1,
+      title: "First Place",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud",
+    },
+    {
+      id: 2,
+      title: "Second Place",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud",
     },
   ],
 };

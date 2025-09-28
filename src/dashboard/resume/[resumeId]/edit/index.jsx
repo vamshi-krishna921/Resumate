@@ -12,7 +12,7 @@ function Edit() {
   const [templateId, setTemplateId] = useState();
   useEffect(() => {
     setResumeContent(dummydata);
-  });
+  },[]);
   useEffect(() => {
     if (resumeId) {
       getResumeById(resumeId)

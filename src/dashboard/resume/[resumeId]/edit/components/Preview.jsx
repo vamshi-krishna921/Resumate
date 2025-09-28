@@ -10,7 +10,6 @@ import Achievements from "./previewComponents/Achievements";
 
 function Preview({ templateId }) {
   const { resumeContent, setResumeContent } = useContext(ResumeContext);
-  console.log("Template ID in Preview:", templateId);
 
   return (
     <div className="p-10 h-full rounded shadow-lg ">

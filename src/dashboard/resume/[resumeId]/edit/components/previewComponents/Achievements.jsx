@@ -10,7 +10,6 @@ function Achievements({ resumeContent }) {
       <div className="space-y-1">
         {resumeContent?.achievements?.map((achievement, index) => (
           <p key={index} className="text-xs">
-            <span className="font-semibold">{achievement.title}:</span>{" "}
             <span className="font-light">{achievement.description}</span>
           </p>
         ))}

@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { updateResume } from "./../../../../../../../service/GlobalAPIs";
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
-import { toast } from "sonner"
+import { toast } from "sonner";
 
 function PersonalDetails({ setIsNextEnabled }) {
   const params = useParams();
@@ -14,7 +14,7 @@ function PersonalDetails({ setIsNextEnabled }) {
   const [formData, setFormData] = useState();
   const [loading, setLoading] = useState(false);
 
-  //* Handle form changes and submit form data 
+  //* Handle form changes and submit form data
   const handleChange = (e) => {
     const { name, value } = e.target;
     setIsNextEnabled(false);
@@ -40,7 +40,7 @@ function PersonalDetails({ setIsNextEnabled }) {
         toast("Data has been added. ✅");
       })
       .catch((err) => {
-        alert("Failed to add data.");
+        toast("Failed to add the data. Please edit something. ❌");
         setLoading(false);
       });
   };

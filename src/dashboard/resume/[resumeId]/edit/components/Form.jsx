@@ -7,8 +7,6 @@ import Summary from "./formComponents/Summary";
 function Form({ templateId }) {
   const [activeNextButton, setActiveNextButton] = useState(1);
   const [isNextEnabled, setIsNextEnabled] = useState(false);
-
-  console.log(activeNextButton);
   return (
     <div>
       {/* Next Button */}
@@ -35,7 +33,7 @@ function Form({ templateId }) {
         <PersonalDetails setIsNextEnabled={setIsNextEnabled} />
       )}
       {/* Summary */}
-      {activeNextButton === 2 && <Summary />}
+      {activeNextButton === 2 && <Summary setIsNextEnabled={setIsNextEnabled}/>}
       {/* Experience for professional (templateId : 2) / Education fro fresher*/}
 
       {/* Education for professional / projects for fresher*/}

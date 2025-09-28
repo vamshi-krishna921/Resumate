@@ -7,7 +7,7 @@ function Preview({ templateId }) {
   console.log("Template ID in Preview:", templateId);
 
   return (
-    <div>
+    <div className="p-10 h-full rounded shadow-lg ">
       {/* Personal details */}
       <PersonalDetails resumeContent={resumeContent} />
       {/* Summary */}
@@ -17,7 +17,6 @@ function Preview({ templateId }) {
       {/* Education for professional / projects for fresher*/}
 
       {/* Skills */}
-      <h1>Preview</h1>
     </div>
   );
 }

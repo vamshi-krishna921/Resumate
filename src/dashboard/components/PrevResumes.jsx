@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function PrevResumes({ resume, index }) {
   return (
     <>
-      <Link to={`/dashboard/resume/`+resume.resumeId+"/edit"}>
+      <Link to={`/dashboard/resume/`+resume.documentId+"/edit"}>
         <div
           key={index}
           className="hover:scale-103 rounded-lg w-[288px] h-[400px] flex gap-3.5 flex-col items-center justify-start cursor-pointer transform-transition duration-200"

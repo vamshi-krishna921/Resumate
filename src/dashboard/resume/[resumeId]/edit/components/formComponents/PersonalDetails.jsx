@@ -2,22 +2,47 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ResumeContext } from "@/contextApi/ResumeContext";
 import React, { useContext } from "react";
+import { useParams } from "react-router-dom";
+import { updateResume } from "./../../../../../../../service/GlobalAPIs";
+import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
+import { toast } from "sonner"
 
-function PersonalDetails({ setIsNextEnabled}){
+function PersonalDetails({ setIsNextEnabled }) {
+  const params = useParams();
   const { resumeContent, setResumeContent } = useContext(ResumeContext);
+  const [formData, setFormData] = useState();
+  const [loading, setLoading] = useState(false);
 
+  //* Handle form changes and submit form data 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setIsNextEnabled(false);
+    setFormData({ ...formData, [name]: value });
     setResumeContent({
       ...resumeContent,
       [name]: value,
     });
   };
 
+  //* Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsNextEnabled(true)
+    const data = {
+      data: formData,
+    };
+    setLoading(true);
+    updateResume(params?.resumeId, data)
+      .then((res) => {
+        console.log(res);
+        setIsNextEnabled(true);
+        setLoading(false);
+        toast("Data has been added. ✅");
+      })
+      .catch((err) => {
+        alert("Failed to add data.");
+        setLoading(false);
+      });
   };
 
   return (
@@ -132,7 +157,9 @@ function PersonalDetails({ setIsNextEnabled}){
         </div>
 
         <div className="col-span-2 flex justify-end mt-3">
-          <Button type="submit">Save</Button>
+          <Button disable={loading} type="submit">
+            {loading ? <LoaderCircle className="animate-spin" /> : "Save"}
+          </Button>
         </div>
       </form>
     </div>

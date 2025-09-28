@@ -20,4 +20,9 @@ export const getResumes = (userEmail) =>
 //* Get resume by ID
 export const getResumeById = (resumeId) =>
   axiosInstance.get(`/resumes?filters[resumeId][$eq]=${resumeId}`);
+
+// //* Update a resume
+export const updateResume = (id, data) =>
+  axiosInstance.put(`/resumes/` + id, data);
+
 export default axiosInstance;

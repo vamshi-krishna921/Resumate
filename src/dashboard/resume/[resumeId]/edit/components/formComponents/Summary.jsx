@@ -12,7 +12,36 @@ function Summary({ setIsNextEnabled }) {
   const { resumeContent, setResumeContent } = useContext(ResumeContext);
   const [summary, setSummary] = useState();
   const [loading, setLoading] = useState(false);
+  const prompt = `Job title: {jobTitle}. Give me one professional recruiting summary for this role without any experience, in 4-5 lines. Only provide a single summary.`;
 
+  //* Calling Gen Ao for summary
+  const generateSummarayUsingAi = async () => {
+    setLoading(true);
+    try {
+      const PROMPT = prompt.replace(
+        "{jobTitle}",
+        resumeContent?.jobTitle || ""
+      );
+
+      const res = await fetch(
+        `${import.meta.env.VITE_STRAPI_URL}/api/generate-summary`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: PROMPT }),
+        }
+      );
+
+      const data = await res.json();
+      setSummary(data.text || "");
+    } catch (err) {
+      console.error("AI generation failed:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //* UseEffect
   useEffect(() => {
     summary && setResumeContent({ ...resumeContent, summary: summary });
   }, [summary]);
@@ -43,7 +72,11 @@ function Summary({ setIsNextEnabled }) {
           <label htmlFor="summary" className="text-sm font-bold">
             Add Summary
           </label>
-          <Button size="sm" type="button">
+          <Button
+            size="sm"
+            type="button"
+            onClick={() => generateSummarayUsingAi()}
+          >
             {" "}
             <Brain />
             Generating using AI
@@ -51,9 +84,11 @@ function Summary({ setIsNextEnabled }) {
         </div>
         <Textarea
           className="mt-4"
+          value={summary || ""} // AI-generated summary shows here automatically
           onChange={(e) => setSummary(e.target.value)}
           required
         />
+
         <div className="col-span-2 flex justify-end mt-3">
           <Button disable={loading} type="submit">
             {loading ? <LoaderCircle className="animate-spin" /> : "Save"}

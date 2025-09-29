@@ -12,18 +12,23 @@ function Edit() {
   const [templateId, setTemplateId] = useState();
   useEffect(() => {
     setResumeContent(dummydata);
-  },[]);
-  useEffect(() => {
-    if (resumeId) {
-      getResumeById(resumeId)
-        .then((res) => {
-          if (res.data.data.length > 0) {
-            setTemplateId(res.data.data[0].templateId);
-          }
-        })
-        .catch((err) => console.error("Error fetching templateId:", err));
-    }
-  }, [resumeId]);
+  }, []);
+useEffect(() => {
+  if (resumeId) {
+    getResumeById(resumeId)
+      .then((res) => {
+        if (res.data && res.data.data) {
+          const record = res.data.data;
+          setTemplateId(record.templateId);
+          setResumeContent({ ...resumeContent, ...record });
+        } else {
+          console.warn("No resume found with this documentId:", resumeId);
+        }
+      })
+      .catch((err) => console.error("Error fetching resume:", err));
+  }
+}, [resumeId]);
+
   return (
     <ResumeContext.Provider value={{ resumeContent, setResumeContent }}>
       <div className="grid grid-cols-1 md:grid-cols-2 mt-4 p-12 gap-12">

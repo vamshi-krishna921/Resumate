@@ -14,7 +14,7 @@ function Summary({ setIsNextEnabled }) {
   const [loading, setLoading] = useState(false);
   const prompt = `Job title: {jobTitle}. Give me one professional recruiting summary for this role without any experience, in 4-5 lines. Only provide a single summary.`;
 
-  //* Calling Gen Ao for summary
+  //* Calling Gen AI for summary
   const generateSummarayUsingAi = async () => {
     setLoading(true);
     try {
@@ -84,7 +84,7 @@ function Summary({ setIsNextEnabled }) {
         </div>
         <Textarea
           className="mt-4"
-          value={summary || ""} // AI-generated summary shows here automatically
+          value={summary || ""} 
           onChange={(e) => setSummary(e.target.value)}
           required
         />

@@ -40,7 +40,7 @@ function PersonalDetails({ setIsNextEnabled }) {
         toast("Data has been added. ✅");
       })
       .catch((err) => {
-        toast("Failed to add the data. Please edit something. ❌");
+        toast("Failed to add the data or go back and try again❗. Please edit something. ❌");
         setLoading(false);
       });
   };

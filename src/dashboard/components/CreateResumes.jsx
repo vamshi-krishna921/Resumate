@@ -42,14 +42,20 @@ function CreateResumes() {
 
     createResume(data)
       .then((res) => {
+        const createdDoc = res.data.data;
+        const docId = createdDoc.documentId;
+
         setResumeTitle("");
         setSelectedTemplate(templates[0].id);
         setOpenDialogBox(false);
         setLoading(false);
-        navigate(`/dashboard/resume/${id}/edit`);
+
+        // Navigate with documentId
+        navigate(`/dashboard/resume/${docId}/edit`);
       })
       .catch((err) => {
         setLoading(false);
+        console.error("Error creating resume:", err);
       });
   };
   return (

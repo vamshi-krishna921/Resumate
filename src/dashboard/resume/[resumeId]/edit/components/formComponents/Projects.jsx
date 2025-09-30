@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useState, useEffect, useContext } from "react";
 import { ResumeContext } from "@/contextApi/ResumeContext";
-import { useParams } from "react-router-dom";
+import { data, useParams } from "react-router-dom";
 import { updateResume } from "./../../../../../../../service/GlobalAPIs";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -16,10 +16,22 @@ const formFields = {
 };
 
 function Projects({ setIsNextEnabled }) {
-  const [projectsList, setProjectsList] = useState([{ ...formFields }]);
+  const [projectsList, setProjectsList] = useState(null);
   const { resumeContent, setResumeContent } = useContext(ResumeContext);
   const [loading, setLoading] = useState(false);
   const params = useParams();
+
+  //* Enable Next button
+  useEffect(() => {
+    if (
+      Array.isArray(resumeContent.projects) &&
+      resumeContent.projects.length > 0
+    ) {
+      setProjectsList(resumeContent.projects);
+    } else {
+      setProjectsList([{ ...formFields }]);
+    }
+  }, [resumeContent]);
 
   //* Handle input change
   const handleChange = (index, e) => {
@@ -38,36 +50,40 @@ function Projects({ setIsNextEnabled }) {
 
   //* Enable Next button
   useEffect(() => {
-    setResumeContent({ ...resumeContent, projects: projectsList });
-    const hasData = projectsList.some((proj) =>
-      Object.values(proj).some((val) => val !== "")
-    );
-    setIsNextEnabled(hasData);
+    if (projectsList) {
+      setResumeContent({ ...resumeContent, projects: projectsList });
+      const hasData = projectsList.some((proj) =>
+        Object.values(proj).some((val) => val !== "")
+      );
+      setIsNextEnabled(hasData);
+    }
   }, [projectsList, setIsNextEnabled]);
-
+  
   //* Submit projects to Strapi
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const hasEmptyFields = projectsList.some((proj) =>
+      Object.values(proj).some((val) => val === "")
+    );
+    if (hasEmptyFields) {
+      toast("Please fill out all fields.❌");
+      return;
+    }
     try {
       setLoading(true);
-
-      const projectsData = projectsList
-        .filter((proj) => Object.values(proj).some((val) => val !== ""))
-        .map((proj) => ({
-          title: proj.title || null,
-          description: proj.description || null,
-          startDate: proj.startDate || null,
-          endDate: proj.endDate || null,
-        }));
-
       const data = {
         data: {
-          projects: projectsData,
+          projects: projectsList.map((proj) => ({
+            title: proj.title || null,
+            description: proj.description || null,
+            startDate: proj.startDate || null,
+            endDate: proj.endDate || null,
+          })),
         },
       };
-
       await updateResume(params?.resumeId, data);
       toast("Projects saved successfully ✅");
+      setIsNextEnabled(true);
     } catch (err) {
       console.error(err);
       toast("Failed to save projects ❌");
@@ -75,7 +91,7 @@ function Projects({ setIsNextEnabled }) {
       setLoading(false);
     }
   };
-
+  if (!projectsList) return null;
   return (
     <div className="p-5 shadow-lg rounded-lg border-t-4 mt-3 border-blue-900">
       <h2 className="text-lg font-bold">Projects</h2>

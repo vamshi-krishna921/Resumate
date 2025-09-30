@@ -13,10 +13,22 @@ const formFields = {
 };
 
 function Skills({ setIsNextEnabled }) {
-  const [skillsList, setSkillsList] = useState([{ ...formFields }]);
+  const [skillsList, setSkillsList] = useState(null);
   const { resumeContent, setResumeContent } = useContext(ResumeContext);
   const [loading, setLoading] = useState(false);
   const params = useParams();
+
+  //* Enable next button if at least one skill has data
+  useEffect(() => {
+    if (
+      Array.isArray(resumeContent?.skills) &&
+      resumeContent.skills.length > 0
+    ) {
+      setSkillsList(resumeContent.skills);
+    } else {
+      setSkillsList([{ ...formFields }]);
+    }
+  }, [resumeContent]);
 
   //* Handle input change
   const handleChange = (index, e) => {
@@ -32,28 +44,40 @@ function Skills({ setIsNextEnabled }) {
     if (skillsList.length > 1) setSkillsList((prev) => prev.slice(0, -1));
   };
 
-  //* Enable next button if at least one skill has data
+  //* Enable Next button
   useEffect(() => {
-    setResumeContent({ ...resumeContent, skills: skillsList });
-    const hasData = skillsList.some((s) =>
-      Object.values(s).some((val) => val !== "")
-    );
-    setIsNextEnabled(hasData);
+    if (skillsList) {
+      setResumeContent({ ...resumeContent, skills: skillsList });
+      const hasData = skillsList.some((skill) =>
+        Object.values(skill).some((val) => val !== "")
+      );
+      setIsNextEnabled(hasData);
+    }
   }, [skillsList, setIsNextEnabled]);
 
   //* Save to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const hasEmptyFields = skillsList.some((skill) =>
+      Object.values(skill).some((val) => val === "")
+    );
+    if (hasEmptyFields) {
+      toast("Please fill out all fields.❌");
+      return;
+    }
     try {
       setLoading(true);
       const data = {
         data: {
-          skills: skillsList,
+          skills: skillsList.map((skill) => ({
+            name: skill.name || null,
+            rating: skill.rating || null,
+          })),
         },
       };
       await updateResume(params?.resumeId, data);
-
       toast("Skills saved successfully ✅");
+      setIsNextEnabled(true);
     } catch (err) {
       console.error(err);
       toast("Failed to save skills ❌");
@@ -61,6 +85,7 @@ function Skills({ setIsNextEnabled }) {
       setLoading(false);
     }
   };
+  if (!skillsList) return null;
 
   return (
     <div className="p-5 shadow-lg rounded-lg border-t-4 mt-3 border-blue-900">

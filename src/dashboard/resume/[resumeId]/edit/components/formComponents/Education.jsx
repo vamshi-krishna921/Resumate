@@ -17,10 +17,22 @@ const formFields = {
 };
 
 function Education({ setIsNextEnabled }) {
-  const [educationList, setEducationList] = useState([{ ...formFields }]);
   const { resumeContent, setResumeContent } = useContext(ResumeContext);
+  const [educationList, setEducationList] = useState(null);
   const [loading, setLoading] = useState(false);
   const params = useParams();
+
+  //* Load existing education data on mount
+  useEffect(() => {
+    if (
+      Array.isArray(resumeContent.education) &&
+      resumeContent.education.length > 0
+    ) {
+      setEducationList(resumeContent.education);
+    } else {
+      setEducationList([{ ...formFields }]);
+    }
+  }, [resumeContent]);
 
   //* Handle input change
   const handleChange = (index, e) => {
@@ -39,25 +51,42 @@ function Education({ setIsNextEnabled }) {
 
   //* Enable Next button
   useEffect(() => {
-    setResumeContent({ ...resumeContent, education: educationList });
-    const hasData = educationList.some((edu) =>
-      Object.values(edu).some((val) => val !== "")
-    );
-    setIsNextEnabled(hasData);
+    if (educationList) {
+      setResumeContent({ ...resumeContent, education: educationList });
+      const hasData = educationList.some((edu) =>
+        Object.values(edu).some((val) => val !== "")
+      );
+      setIsNextEnabled(hasData);
+    }
   }, [educationList, setIsNextEnabled]);
 
   //* Submit education data to Strapi
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const hasEmptyField = educationList.some((edu) =>
+      Object.values(edu).some((val) => val === "")
+    );
+    if (hasEmptyField) {
+      toast("Please fill all the fields ❌");
+      return;
+    }
     try {
       setLoading(true);
       const data = {
         data: {
-          education: educationList,
+          education: educationList.map((edu) => ({
+            universityName: edu.universityName || null,
+            degree: edu.degree || null,
+            major: edu.major || null,
+            cgpa: edu.cgpa || null,
+            startDate: edu.startDate || null,
+            endDate: edu.endDate || null,
+          })),
         },
       };
       await updateResume(params?.resumeId, data);
       toast("Education saved successfully ✅");
+      setIsNextEnabled(true);
     } catch (err) {
       console.error(err);
       toast("Failed to save education ❌");
@@ -65,6 +94,8 @@ function Education({ setIsNextEnabled }) {
       setLoading(false);
     }
   };
+
+  if (!educationList) return null;
 
   return (
     <div className="p-5 shadow-lg rounded-lg border-t-4 mt-3 border-green-900">

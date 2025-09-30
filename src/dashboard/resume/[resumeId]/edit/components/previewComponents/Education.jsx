@@ -15,7 +15,7 @@ function Education({ resumeContent, templateId }) {
               {education.startDate} - {education.endDate}
             </span>
           </h2>
-          <h3 className="italic text-xs my-1">CGPA : {education.cgpa}</h3>
+          <h3 className="italic text-xs my-1">GPA : {education.cgpa}</h3>
         </div>
       ))}
     </div>

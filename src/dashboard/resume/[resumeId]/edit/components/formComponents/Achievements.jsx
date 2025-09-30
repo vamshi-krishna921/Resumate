@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import React, { useState, useEffect, useContext } from "react";
 import { ResumeContext } from "@/contextApi/ResumeContext";
 import { toast } from "sonner";
-import { useParams } from "react-router-dom";
+import { data, useParams } from "react-router-dom";
 import { updateResume } from "./../../../../../../../service/GlobalAPIs";
 import { LoaderCircle } from "lucide-react";
 
@@ -14,10 +14,22 @@ const formFields = {
 };
 
 function Achievements({ setIsNextEnabled }) {
-  const [achievementsList, setAchievementsList] = useState([{ ...formFields }]);
+  const [achievementsList, setAchievementsList] = useState(null);
   const { resumeContent, setResumeContent } = useContext(ResumeContext);
   const [loading, setLoading] = useState(false);
   const params = useParams();
+
+  //* Enable Next button if at least one achievement has data
+  useEffect(() => {
+    if (
+      Array.isArray(resumeContent?.achievements) &&
+      resumeContent.achievements.length > 0
+    ) {
+      setAchievementsList(resumeContent.achievements);
+    } else {
+      setAchievementsList([{ ...formFields }]);
+    }
+  }, [resumeContent]);
 
   //* Handle input change
   const handleChange = (index, e) => {
@@ -35,23 +47,35 @@ function Achievements({ setIsNextEnabled }) {
       setAchievementsList((prev) => prev.slice(0, -1));
   };
 
-  //* Enable Next button if at least one achievement has data
+  //* Enable Next button
   useEffect(() => {
-    setResumeContent({ ...resumeContent, achievements: achievementsList });
-    const hasData = achievementsList.some((a) =>
-      Object.values(a).some((val) => val !== "")
-    );
-    setIsNextEnabled(hasData);
+    if (achievementsList) {
+      setResumeContent({ ...resumeContent, achievements: achievementsList });
+      const hasData = achievementsList.some((achievement) =>
+        Object.values(achievement).some((val) => val !== "")
+      );
+      setIsNextEnabled(hasData);
+    }
   }, [achievementsList, setIsNextEnabled]);
 
   //* Submit achievements to Strapi
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const hasEmptyFields = achievementsList.some((achievement) =>
+      Object.values(achievement).some((val) => val === "")
+    );
+    if (hasEmptyFields) {
+      toast("Please fill out all fields.❌");
+      return;
+    }
     try {
       setLoading(true);
       const data = {
         data: {
-          achievements: achievementsList,
+          achievements: achievementsList.map((achievement) => ({
+            title: achievement.title || null,
+            description: achievement.description || null,
+          })),
         },
       };
       await updateResume(params?.resumeId, data);
@@ -63,7 +87,7 @@ function Achievements({ setIsNextEnabled }) {
       setLoading(false);
     }
   };
-
+  if (!achievementsList) return null;
   return (
     <div className="p-5 shadow-lg rounded-lg border-t-4 mt-3 border-blue-900">
       <h2 className="text-lg font-bold">Achievements</h2>

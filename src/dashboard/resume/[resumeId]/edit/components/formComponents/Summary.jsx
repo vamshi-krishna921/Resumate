@@ -33,7 +33,11 @@ function Summary({ setIsNextEnabled }) {
       );
 
       const data = await res.json();
-      setSummary(data.text || "");
+      const generatedSummary = data.text || "";
+
+      // Update both local state and context
+      setSummary(generatedSummary);
+      setResumeContent({ ...resumeContent, summary: generatedSummary });
     } catch (err) {
       console.error("AI generation failed:", err);
     } finally {
@@ -43,8 +47,12 @@ function Summary({ setIsNextEnabled }) {
 
   //* UseEffect
   useEffect(() => {
-    summary && setResumeContent({ ...resumeContent, summary: summary });
-  }, [summary]);
+    if (resumeContent?.summary) {
+      setSummary(resumeContent.summary);
+    }
+  }, [resumeContent]);
+
+  //* Handle Summary Change
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -84,8 +92,11 @@ function Summary({ setIsNextEnabled }) {
         </div>
         <Textarea
           className="mt-4"
-          value={summary || ""} 
-          onChange={(e) => setSummary(e.target.value)}
+          value={summary || ""}
+          onChange={(e) => {
+            setSummary(e.target.value);
+            setResumeContent({ ...resumeContent, summary: e.target.value });
+          }}
           required
         />
 

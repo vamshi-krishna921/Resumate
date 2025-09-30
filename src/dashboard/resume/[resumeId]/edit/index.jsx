@@ -9,25 +9,26 @@ import { getResumeById } from "../../../../../service/GlobalAPIs";
 function Edit() {
   const { resumeId } = useParams();
   const [resumeContent, setResumeContent] = useState(dummydata);
-  const [templateId, setTemplateId] = useState();
+  const [templateId, setTemplateId] = useState(null);
+
+  // Fetch resume by ID if it exists
   useEffect(() => {
-    setResumeContent(dummydata);
-  }, []);
-useEffect(() => {
-  if (resumeId) {
-    getResumeById(resumeId)
-      .then((res) => {
-        if (res.data && res.data.data) {
-          const record = res.data.data;
-          setTemplateId(record.templateId);
-          setResumeContent({ ...resumeContent, ...record });
-        } else {
-          console.warn("No resume found with this documentId:", resumeId);
-        }
-      })
-      .catch((err) => console.error("Error fetching resume:", err));
-  }
-}, [resumeId]);
+    if (resumeId) {
+      getResumeById(resumeId)
+        .then((res) => {
+          if (res.data?.data) {
+            const record = res.data.data;
+            console.log("Fetched resume:", record);
+            setTemplateId(record.templateId || null);
+            // Merge fetched data with dummydata to avoid undefined fields
+            setResumeContent({ ...dummydata, ...record });
+          } else {
+            console.warn("No resume found with this documentId:", resumeId);
+          }
+        })
+        .catch((err) => console.error("Error fetching resume:", err));
+    }
+  }, [resumeId]);
 
   return (
     <ResumeContext.Provider value={{ resumeContent, setResumeContent }}>

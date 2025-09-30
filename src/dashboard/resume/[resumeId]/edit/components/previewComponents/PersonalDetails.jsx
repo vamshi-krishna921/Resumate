@@ -1,23 +1,23 @@
 import React from "react";
 
 function PersonalDetails({ resumeContent }) {
-  const cleanUrl = (url) => url.replace(/^https?:\/\//, ""); // remove http:// or https://
+  const cleanUrl = (url) => url.replace(/^https?:\/\//, "");
 
   const contactDetails = [
     resumeContent?.email && {
-      label: resumeContent.email, // show email only
+      label: resumeContent.email,
       href: `mailto:${resumeContent.email}`,
     },
     resumeContent?.phone && {
-      label: resumeContent.phone, // show phone only
+      label: resumeContent.phone,
       href: `tel:${resumeContent.phone}`,
     },
     resumeContent?.linkedin && {
-      label: cleanUrl(resumeContent.linkedin), // show clean LinkedIn
+      label: cleanUrl(resumeContent.linkedin),
       href: resumeContent.linkedin,
     },
     resumeContent?.github && {
-      label: cleanUrl(resumeContent.github), // show clean GitHub
+      label: cleanUrl(resumeContent.github),
       href: resumeContent.github,
     },
   ].filter(Boolean);

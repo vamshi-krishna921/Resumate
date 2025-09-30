@@ -6,6 +6,8 @@ import Education from "./formComponents/Education";
 import Projects from "./formComponents/Projects";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import Skills from "./formComponents/Skills";
+import Achievements from "./formComponents/Achievements";
 
 function Form({ templateId }) {
   const [activeStep, setActiveStep] = useState(0); // 0-indexed steps
@@ -25,6 +27,8 @@ function Form({ templateId }) {
     ) : (
       <Projects setIsNextEnabled={setIsNextEnabled} />
     ),
+    <Skills setIsNextEnabled={setIsNextEnabled} />,
+    <Achievements setIsNextEnabled={setIsNextEnabled} />,
   ];
 
   const handleNext = () => {

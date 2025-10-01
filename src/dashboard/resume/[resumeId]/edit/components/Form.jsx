@@ -8,12 +8,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Skills from "./formComponents/Skills";
 import Achievements from "./formComponents/Achievements";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Form({ templateId }) {
-  const [activeStep, setActiveStep] = useState(0); // 0-indexed steps
+  const [activeStep, setActiveStep] = useState(0);
   const [isNextEnabled, setIsNextEnabled] = useState(false);
+  const navigate = useNavigate();
+  const { resumeId } = useParams();
 
-  // Define steps as an array
   const steps = [
     <PersonalDetails setIsNextEnabled={setIsNextEnabled} />,
     <Summary setIsNextEnabled={setIsNextEnabled} />,
@@ -34,14 +36,16 @@ function Form({ templateId }) {
   const handleNext = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep((prev) => prev + 1);
-      setIsNextEnabled(false); // Reset next button for new step
+      setIsNextEnabled(false);
+    } else {
+      navigate(`/my-resume/` + resumeId + "/view");
     }
   };
 
   const handlePrev = () => {
     if (activeStep > 0) {
       setActiveStep((prev) => prev - 1);
-      setIsNextEnabled(true); // optional: keep previous step saved
+      setIsNextEnabled(true);
     }
   };
 
@@ -59,7 +63,6 @@ function Form({ templateId }) {
         </Button>
       </div>
 
-      {/* Render the steps */}
       {steps[activeStep]}
     </div>
   );

@@ -17,7 +17,6 @@ function Dashboard() {
     getResumes(user?.primaryEmailAddress?.emailAddress)
       .then((res) => {
         setprevResumes(res.data.data);
-        console.log("prevResumes fetched successfully: ", res.data.data);
       })
       .catch((err) => {
         console.error("Error fetching prevResumes: ", err);

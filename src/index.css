@@ -140,3 +140,21 @@
 .bg-color {
   @apply bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED];
 }
+
+@media print {
+  #dontPrint {
+    display: none;
+  }
+  #print {
+    display: block;
+  }
+  body{
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+}
+@page{
+  size: auto;
+  margin: 0mm;
+}

@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import React, { useState, useEffect, useContext } from "react";
 import { ResumeContext } from "@/contextApi/ResumeContext";
 import { toast } from "sonner";
-import { data, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { updateResume } from "./../../../../../../../service/GlobalAPIs";
 import { LoaderCircle } from "lucide-react";
 

@@ -8,6 +8,7 @@ import Home from "./home";
 import Dashboard from "./dashboard";
 import { ClerkProvider } from "@clerk/clerk-react";
 import Edit from "./dashboard/resume/[resumeId]/edit";
+import View from "./my-resume/[resume-id]/View/View";
 
 const publishKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -32,6 +33,10 @@ const root = createBrowserRouter([
   {
     path: "/auth/sign-in",
     element: <SignIn />,
+  },
+  {
+    path: "/my-resume/:resumeId/view",
+    element: <View />,
   },
 ]);
 createRoot(document.getElementById("root")).render(

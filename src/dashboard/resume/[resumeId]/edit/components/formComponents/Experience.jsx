@@ -32,7 +32,7 @@ function Experience({ setIsNextEnabled }) {
     } else if (!experienceList) {
       setExperienceList([{ ...formFields }]);
     }
-  }, [resumeContent]);
+  }, []);
 
   //* Handle input change
   const handleChange = (index, e) => {

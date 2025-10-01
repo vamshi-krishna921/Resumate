@@ -5,7 +5,8 @@ import Preview from "@/dashboard/resume/[resumeId]/edit/components/Preview";
 import Header from "@/components/Header/Header";
 import { Button } from "@/components/ui/button";
 import { getResumeById } from "./../../../../service/GlobalAPIs";
-import dummydata from "@/dummydata/dummydata";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 function View() {
   const { resumeId } = useParams();
@@ -23,7 +24,6 @@ function View() {
         const res = await getResumeById(resumeId);
         if (res.data?.data) {
           const record = res.data.data;
-          console.log("Fetched resume:", record);
           setTemplateId(record.templateId || null);
           setResumeContent(record);
         } else {
@@ -42,16 +42,35 @@ function View() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <p>Loading your resume...</p>
+        <p className="">Loading your resume...</p>
       </div>
     );
   }
 
   const handleDownload = () => {
     window.print();
+    toast("Convert the pdf to OCR word for editing ✅ ");
   };
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "My Resume",
+          text: "Check out my resume!",
+          url: window.location.href,
+        });
+        toast("Resume shared successfully. ✅ ");
+      } catch (err) {
+        toast("Error sharing resume. ❌");
+      }
+    } else {
+      toast("Share is not supported on this device.📱💻");
+    }
+  };
+
   return (
     <ResumeContext.Provider value={{ resumeContent, setResumeContent }}>
+      <Toaster />
       <div id="dontPrint">
         <Header />
 
@@ -65,7 +84,7 @@ function View() {
           </p>
 
           <div className="flex items-center justify-center md:justify-between gap-4 my-8">
-            <Button>Share</Button>
+            <Button onClick={handleShare}>Share</Button>
             <Button onClick={handleDownload}>Download</Button>
           </div>
         </div>

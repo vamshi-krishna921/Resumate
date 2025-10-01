@@ -142,19 +142,35 @@
 }
 
 @media print {
-  #dontPrint {
-    display: none;
+  @page {
+    margin: 0; /* removes default top/bottom/left/right margins */
+    size: A4; /* or 'auto' */
+  }
+  a {
+    color: #1a0dab !important; /* classic blue link color */
+    text-decoration: underline !important; /* optional: underline links */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
   #print {
     display: block;
+    color: rgb(0, 0, 0);
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
-  body{
-    margin: 0;
-    padding: 0;
-    box-shadow: none;
+
+  #dontPrint {
+    display: none;
   }
 }
-@page{
+@page {
   size: auto;
-  margin: 0mm;
+  margin: 0mm !important;
 }

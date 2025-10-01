@@ -19,18 +19,42 @@ const formFields = {
 };
 
 function Experience({ setIsNextEnabled }) {
-  const [experienceList, setExperienceList] = useState([{ ...formFields }]);
   const { resumeContent, setResumeContent } = useContext(ResumeContext);
+  const [experienceList, setExperienceList] = useState(null);
   const [loadingIndex, setLoadingIndex] = useState(null);
   const [loading, setLoading] = useState(false);
   const params = useParams();
 
-  //* Generate AI summary
+  //* Initialize experience list from Strapi
+  useEffect(() => {
+    if (resumeContent?.Experience && experienceList === null) {
+      setExperienceList(resumeContent.Experience);
+    } else if (!experienceList) {
+      setExperienceList([{ ...formFields }]);
+    }
+  }, [resumeContent]);
+
+  //* Handle input change
+  const handleChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedList = [...experienceList];
+    updatedList[index][name] = value;
+
+    setExperienceList(updatedList);
+    setResumeContent((prev) => ({ ...prev, Experience: updatedList }));
+
+    const hasData = updatedList.some((exp) =>
+      Object.values(exp).some((val) => val !== "")
+    );
+    setIsNextEnabled(hasData);
+  };
+
+  //* Generate AI work summary
   const generateWorkSummary = async (index) => {
     setLoadingIndex(index);
     try {
-      const experience = experienceList[index];
-      const prompt = `Position: ${experience.title}. Company: ${experience.companyName}. Write a concise professional work summary in 5-7 lines. Focus on key achievements, skills demonstrated, and contributions. Provide a single paragraph.`;
+      const exp = experienceList[index];
+      const prompt = `Position: ${exp.title}. Company: ${exp.companyName}. Write a concise professional work summary in 5-7 lines. Focus on key achievements, skills demonstrated, and contributions. Provide a single paragraph.`;
 
       const res = await fetch(
         `${import.meta.env.VITE_STRAPI_URL}/api/generate-summary`,
@@ -46,6 +70,7 @@ function Experience({ setIsNextEnabled }) {
         const updatedList = [...experienceList];
         updatedList[index].workSummery = data.text.trim();
         setExperienceList(updatedList);
+        setResumeContent((prev) => ({ ...prev, Experience: updatedList }));
         toast("Work summary generated! ✅");
       }
     } catch (err) {
@@ -56,71 +81,63 @@ function Experience({ setIsNextEnabled }) {
     }
   };
 
-  //* Handle input change
-  const handleChange = (index, e) => {
-    const { name, value } = e.target;
-    const updatedList = [...experienceList];
-    updatedList[index][name] = value;
-    setExperienceList(updatedList);
-  };
-
-  //* Add / Remove experience
+  //* Add / Remove experience forms
   const addMoreExperience = () =>
-    setExperienceList([
-      ...experienceList,
-      {
-        title: "",
-        companyName: "",
-        city: "",
-        state: "",
-        startDate: "",
-        endDate: "",
-        workSummery: "",
-      },
-    ]);
+    setExperienceList([...experienceList, { ...formFields }]);
+
   const removeExperience = () => {
-    if (experienceList.length > 1)
-      setExperienceList((prev) => prev.slice(0, -1));
+    if (experienceList.length > 1) {
+      const updatedList = experienceList.slice(0, -1);
+      setExperienceList(updatedList);
+      setResumeContent((prev) => ({ ...prev, Experience: updatedList }));
+
+      const hasData = updatedList.some((exp) =>
+        Object.values(exp).some((val) => val !== "")
+      );
+      setIsNextEnabled(hasData);
+    }
   };
 
-  //* Enable next button if at least one experience has data
-  useEffect(() => {
-    setResumeContent({ ...resumeContent, experience: experienceList });
-    const hasData = experienceList.some((exp) =>
-      Object.values(exp).some((val) => val !== "")
-    );
-    setIsNextEnabled(hasData);
-  }, [experienceList, setIsNextEnabled]);
-
-  //* Handle form submit to backend
+  //* Submit experience to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    if (!experienceList) return;
+
+    const hasEmptyFields = experienceList.some((exp) =>
+      Object.values(exp).some((val) => val === "")
+    );
+    if (hasEmptyFields) {
+      toast("Please fill out all fields! ❌");
+      return;
+    }
 
     try {
+      setLoading(true);
       const data = {
         data: {
           Experience: experienceList.map((exp) => ({
-            title: exp.title || "",
-            companyName: exp.companyName || "",
-            city: exp.city || "",
-            state: exp.state || "",
-            startDate: exp.startDate || "",
-            endDate: exp.endDate || "",
-            workSummery: exp.workSummery || "",
+            title: exp.title || null,
+            companyName: exp.companyName || null,
+            city: exp.city || null,
+            state: exp.state || null,
+            startDate: exp.startDate || null,
+            endDate: exp.endDate || null,
+            workSummery: exp.workSummery || null,
           })),
         },
       };
-
       await updateResume(params?.resumeId, data);
-      toast("Data saved successfully ✅");
+      toast("Experience saved successfully ✅");
+      setIsNextEnabled(true);
     } catch (err) {
       console.error(err);
-      toast("Failed to save data ❌");
+      toast("Failed to save experience ❌");
     } finally {
       setLoading(false);
     }
   };
+
+  if (!experienceList) return null;
 
   return (
     <div className="p-5 shadow-lg rounded-lg border-t-4 mt-3 border-blue-900">
@@ -143,6 +160,7 @@ function Experience({ setIsNextEnabled }) {
                 onChange={(e) => handleChange(index, e)}
               />
             </div>
+
             <div className="mt-3">
               <label>Company Name</label>
               <Input
@@ -151,6 +169,7 @@ function Experience({ setIsNextEnabled }) {
                 onChange={(e) => handleChange(index, e)}
               />
             </div>
+
             <div className="mt-3">
               <label>City</label>
               <Input
@@ -159,6 +178,7 @@ function Experience({ setIsNextEnabled }) {
                 onChange={(e) => handleChange(index, e)}
               />
             </div>
+
             <div className="mt-3">
               <label>State</label>
               <Input
@@ -167,14 +187,17 @@ function Experience({ setIsNextEnabled }) {
                 onChange={(e) => handleChange(index, e)}
               />
             </div>
+
             <div className="mt-3">
               <label>Start Date</label>
               <Input
+                type="date"
                 name="startDate"
                 value={experience.startDate}
                 onChange={(e) => handleChange(index, e)}
               />
             </div>
+
             <div className="mt-3">
               <label>End Date</label>
               <Input
@@ -185,7 +208,6 @@ function Experience({ setIsNextEnabled }) {
               />
             </div>
 
-            {/* Work Summary */}
             <div className="col-span-2 mt-3 flex flex-col gap-2">
               <label>Work Summary</label>
               <div className="flex gap-2">

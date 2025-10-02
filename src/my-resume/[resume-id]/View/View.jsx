@@ -49,7 +49,7 @@ function View() {
 
   const handleDownload = () => {
     window.print();
-    toast("Convert the pdf to OCR word for editing ✅ ");
+    toast("Convert the pdf to high quality OCR word for editing ✅ ");
   };
   const handleShare = async () => {
     if (navigator.share) {

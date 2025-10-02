@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useState, useEffect, useContext } from "react";
 import { ResumeContext } from "@/contextApi/ResumeContext";
-import { data, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { updateResume } from "./../../../../../../../service/GlobalAPIs";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -21,7 +21,6 @@ function Projects({ setIsNextEnabled }) {
   const [loading, setLoading] = useState(false);
   const params = useParams();
 
-  //* Enable Next button
   useEffect(() => {
     if (
       Array.isArray(resumeContent.projects) &&
@@ -33,7 +32,6 @@ function Projects({ setIsNextEnabled }) {
     }
   }, [resumeContent]);
 
-  //* Handle input change
   const handleChange = (index, e) => {
     const { name, value } = e.target;
     const updatedList = [...projectsList];
@@ -41,14 +39,12 @@ function Projects({ setIsNextEnabled }) {
     setProjectsList(updatedList);
   };
 
-  //* Add and Remove project
   const addMoreProjects = () =>
     setProjectsList([...projectsList, { ...formFields }]);
   const removeProject = () => {
     if (projectsList.length > 1) setProjectsList((prev) => prev.slice(0, -1));
   };
 
-  //* Enable Next button
   useEffect(() => {
     if (projectsList) {
       setResumeContent({ ...resumeContent, projects: projectsList });
@@ -58,8 +54,7 @@ function Projects({ setIsNextEnabled }) {
       setIsNextEnabled(hasData);
     }
   }, [projectsList, setIsNextEnabled]);
-  
-  //* Submit projects to Strapi
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const hasEmptyFields = projectsList.some((proj) =>
@@ -91,7 +86,9 @@ function Projects({ setIsNextEnabled }) {
       setLoading(false);
     }
   };
+
   if (!projectsList) return null;
+
   return (
     <div className="p-5 shadow-lg rounded-lg border-t-4 mt-3 border-blue-900">
       <h2 className="text-lg font-bold">Projects</h2>
@@ -103,10 +100,10 @@ function Projects({ setIsNextEnabled }) {
         {projectsList.map((project, index) => (
           <div
             key={index}
-            className="grid grid-cols-2 gap-3 p-4 my-4 rounded-lg border border-gray-200"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 my-4 rounded-lg border border-gray-200"
           >
             <div>
-              <label>Project Title</label>
+              <label className="text-sm font-medium">Project Title</label>
               <Input
                 name="title"
                 value={project.title}
@@ -115,7 +112,7 @@ function Projects({ setIsNextEnabled }) {
             </div>
 
             <div>
-              <label>Description</label>
+              <label className="text-sm font-medium">Description</label>
               <Textarea
                 placeholder="Describe through points"
                 name="description"
@@ -125,7 +122,7 @@ function Projects({ setIsNextEnabled }) {
             </div>
 
             <div>
-              <label>Start Date</label>
+              <label className="text-sm font-medium">Start Date</label>
               <Input
                 type="date"
                 name="startDate"
@@ -135,10 +132,10 @@ function Projects({ setIsNextEnabled }) {
             </div>
 
             <div>
-              <label>End Date</label>
+              <label className="text-sm font-medium">End Date</label>
               <Input
                 name="endDate"
-                placeholder="currently working add present"
+                placeholder="Currently working? Add 'Present'"
                 value={project.endDate}
                 onChange={(e) => handleChange(index, e)}
               />
@@ -146,8 +143,8 @@ function Projects({ setIsNextEnabled }) {
           </div>
         ))}
 
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex gap-2">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-4 gap-2 md:gap-0">
+          <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
             <Button type="button" onClick={addMoreProjects}>
               + Add More Projects
             </Button>
@@ -155,7 +152,11 @@ function Projects({ setIsNextEnabled }) {
               - Remove Project
             </Button>
           </div>
-          <Button type="submit" disabled={loading}>
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full md:w-auto bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED] font-body cursor-pointer hover:scale-107 active:scale-95 transition-all text-white font-[400px]"
+          >
             {loading ? <LoaderCircle className="animate-spin" /> : "Save"}
           </Button>
         </div>

@@ -22,7 +22,6 @@ function Education({ setIsNextEnabled }) {
   const [loading, setLoading] = useState(false);
   const params = useParams();
 
-  //* Load existing education data on mount
   useEffect(() => {
     if (
       Array.isArray(resumeContent.education) &&
@@ -34,7 +33,6 @@ function Education({ setIsNextEnabled }) {
     }
   }, [resumeContent]);
 
-  //* Handle input change
   const handleChange = (index, e) => {
     const { name, value } = e.target;
     const updatedList = [...educationList];
@@ -42,14 +40,12 @@ function Education({ setIsNextEnabled }) {
     setEducationList(updatedList);
   };
 
-  //* Add and remove education forms
   const addMoreEducation = () =>
     setEducationList([...educationList, { ...formFields }]);
   const removeEducation = () => {
     if (educationList.length > 1) setEducationList((prev) => prev.slice(0, -1));
   };
 
-  //* Enable Next button
   useEffect(() => {
     if (educationList) {
       setResumeContent({ ...resumeContent, education: educationList });
@@ -60,7 +56,6 @@ function Education({ setIsNextEnabled }) {
     }
   }, [educationList, setIsNextEnabled]);
 
-  //* Submit education data to Strapi
   const handleSubmit = async (e) => {
     e.preventDefault();
     const hasEmptyField = educationList.some((edu) =>
@@ -108,10 +103,10 @@ function Education({ setIsNextEnabled }) {
         {educationList.map((edu, index) => (
           <div
             key={index}
-            className="grid grid-cols-2 gap-3 p-4 my-4 rounded-lg border border-gray-200"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 my-4 rounded-lg border border-gray-200"
           >
             <div>
-              <label>University</label>
+              <label className="text-sm font-medium">University</label>
               <Input
                 name="universityName"
                 value={edu.universityName}
@@ -120,7 +115,7 @@ function Education({ setIsNextEnabled }) {
             </div>
 
             <div>
-              <label>Degree</label>
+              <label className="text-sm font-medium">Degree</label>
               <Input
                 name="degree"
                 value={edu.degree}
@@ -129,7 +124,7 @@ function Education({ setIsNextEnabled }) {
             </div>
 
             <div>
-              <label>Branch/Course</label>
+              <label className="text-sm font-medium">Branch/Course</label>
               <Input
                 name="major"
                 value={edu.major}
@@ -138,7 +133,7 @@ function Education({ setIsNextEnabled }) {
             </div>
 
             <div>
-              <label>CGPA</label>
+              <label className="text-sm font-medium">CGPA</label>
               <Input
                 name="cgpa"
                 value={edu.cgpa}
@@ -147,7 +142,7 @@ function Education({ setIsNextEnabled }) {
             </div>
 
             <div>
-              <label>Start Date</label>
+              <label className="text-sm font-medium">Start Date</label>
               <Input
                 name="startDate"
                 type="date"
@@ -157,7 +152,7 @@ function Education({ setIsNextEnabled }) {
             </div>
 
             <div>
-              <label>End Date</label>
+              <label className="text-sm font-medium">End Date</label>
               <Input
                 name="endDate"
                 placeholder="Currently studying? Add 'Present'"
@@ -168,8 +163,8 @@ function Education({ setIsNextEnabled }) {
           </div>
         ))}
 
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-4 gap-2 sm:gap-0">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Button type="button" onClick={addMoreEducation}>
               + Add More
             </Button>
@@ -177,7 +172,11 @@ function Education({ setIsNextEnabled }) {
               - Remove
             </Button>
           </div>
-          <Button type="submit" disabled={loading}>
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full sm:w-auto bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED] font-body cursor-pointer hover:scale-107 active:scale-95 transition-all text-white font-[400px]"
+          >
             {loading ? <LoaderCircle className="animate-spin" /> : "Save"}
           </Button>
         </div>

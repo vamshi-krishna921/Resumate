@@ -19,7 +19,6 @@ function Achievements({ setIsNextEnabled }) {
   const [loading, setLoading] = useState(false);
   const params = useParams();
 
-  //* Enable Next button if at least one achievement has data
   useEffect(() => {
     if (
       Array.isArray(resumeContent?.achievements) &&
@@ -31,7 +30,6 @@ function Achievements({ setIsNextEnabled }) {
     }
   }, [resumeContent]);
 
-  //* Handle input change
   const handleChange = (index, e) => {
     const { name, value } = e.target;
     const updatedList = [...achievementsList];
@@ -39,7 +37,6 @@ function Achievements({ setIsNextEnabled }) {
     setAchievementsList(updatedList);
   };
 
-  //* Add/remove achievement forms
   const addMoreAchievements = () =>
     setAchievementsList([...achievementsList, { ...formFields }]);
   const removeAchievement = () => {
@@ -47,7 +44,6 @@ function Achievements({ setIsNextEnabled }) {
       setAchievementsList((prev) => prev.slice(0, -1));
   };
 
-  //* Enable Next button
   useEffect(() => {
     if (achievementsList) {
       setResumeContent({ ...resumeContent, achievements: achievementsList });
@@ -58,7 +54,6 @@ function Achievements({ setIsNextEnabled }) {
     }
   }, [achievementsList, setIsNextEnabled]);
 
-  //* Submit achievements to Strapi
   const handleSubmit = async (e) => {
     e.preventDefault();
     const hasEmptyFields = achievementsList.some((achievement) =>
@@ -87,7 +82,9 @@ function Achievements({ setIsNextEnabled }) {
       setLoading(false);
     }
   };
+
   if (!achievementsList) return null;
+
   return (
     <div className="p-5 shadow-lg rounded-lg border-t-4 mt-3 border-blue-900">
       <h2 className="text-lg font-bold">Achievements</h2>
@@ -97,10 +94,10 @@ function Achievements({ setIsNextEnabled }) {
         {achievementsList.map((achievement, index) => (
           <div
             key={index}
-            className="grid grid-cols-2 gap-3 p-4 my-4 rounded-lg border border-gray-200"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 my-4 rounded-lg border border-gray-200"
           >
             <div>
-              <label>Title</label>
+              <label className="text-sm font-medium">Title</label>
               <Input
                 name="title"
                 value={achievement.title}
@@ -109,7 +106,7 @@ function Achievements({ setIsNextEnabled }) {
             </div>
 
             <div>
-              <label>Description</label>
+              <label className="text-sm font-medium">Description</label>
               <Textarea
                 name="description"
                 value={achievement.description}
@@ -119,8 +116,8 @@ function Achievements({ setIsNextEnabled }) {
           </div>
         ))}
 
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex gap-2">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-4 gap-2 md:gap-0">
+          <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
             <Button type="button" onClick={addMoreAchievements}>
               + Add More
             </Button>
@@ -128,7 +125,11 @@ function Achievements({ setIsNextEnabled }) {
               - Remove
             </Button>
           </div>
-          <Button type="submit" disabled={loading}>
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full md:w-auto bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED] font-body cursor-pointer hover:scale-107 active:scale-95 transition-all text-white font-[400px]"
+          >
             {loading ? <LoaderCircle className="animate-spin" /> : "Save"}
           </Button>
         </div>

@@ -1,10 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ResumeContext } from "@/contextApi/ResumeContext";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { updateResume } from "./../../../../../../../service/GlobalAPIs";
-import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
 
@@ -14,7 +13,6 @@ function PersonalDetails({ setIsNextEnabled }) {
   const [formData, setFormData] = useState();
   const [loading, setLoading] = useState(false);
 
-  //* Handle form changes and submit form data
   const handleChange = (e) => {
     const { name, value } = e.target;
     setIsNextEnabled(false);
@@ -25,7 +23,6 @@ function PersonalDetails({ setIsNextEnabled }) {
     });
   };
 
-  //* Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -34,7 +31,6 @@ function PersonalDetails({ setIsNextEnabled }) {
     setLoading(true);
     updateResume(params?.resumeId, data)
       .then((res) => {
-        console.log(res);
         setIsNextEnabled(true);
         setLoading(false);
         toast("Data has been added. ✅");
@@ -52,7 +48,10 @@ function PersonalDetails({ setIsNextEnabled }) {
         Start with your basic details
       </p>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-3 mb-3">
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3"
+      >
         {/* First Name */}
         <div>
           <label className="text-sm text-black" htmlFor="firstName">
@@ -80,7 +79,7 @@ function PersonalDetails({ setIsNextEnabled }) {
         </div>
 
         {/* Job Title */}
-        <div className="col-span-2">
+        <div className="col-span-1 sm:col-span-2">
           <label className="text-sm text-black" htmlFor="jobTitle">
             Job Title
           </label>
@@ -93,7 +92,7 @@ function PersonalDetails({ setIsNextEnabled }) {
         </div>
 
         {/* Address */}
-        <div className="col-span-2">
+        <div className="col-span-1 sm:col-span-2">
           <label className="text-sm text-black" htmlFor="address">
             Address
           </label>
@@ -156,8 +155,8 @@ function PersonalDetails({ setIsNextEnabled }) {
           />
         </div>
 
-        <div className="col-span-2 flex justify-end mt-3">
-          <Button disable={loading} type="submit">
+        <div className="col-span-1 sm:col-span-2 flex justify-end mt-3">
+          <Button disabled={loading} type="submit">
             {loading ? <LoaderCircle className="animate-spin" /> : "Save"}
           </Button>
         </div>

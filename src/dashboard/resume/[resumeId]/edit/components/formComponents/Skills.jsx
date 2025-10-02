@@ -18,7 +18,6 @@ function Skills({ setIsNextEnabled }) {
   const [loading, setLoading] = useState(false);
   const params = useParams();
 
-  //* Enable next button if at least one skill has data
   useEffect(() => {
     if (
       Array.isArray(resumeContent?.skills) &&
@@ -30,7 +29,6 @@ function Skills({ setIsNextEnabled }) {
     }
   }, [resumeContent]);
 
-  //* Handle input change
   const handleChange = (index, e) => {
     const { name, value } = e.target;
     const updatedList = [...skillsList];
@@ -38,13 +36,11 @@ function Skills({ setIsNextEnabled }) {
     setSkillsList(updatedList);
   };
 
-  //* Add/remove skill rows
   const addMoreSkills = () => setSkillsList([...skillsList, { ...formFields }]);
   const removeSkill = () => {
     if (skillsList.length > 1) setSkillsList((prev) => prev.slice(0, -1));
   };
 
-  //* Enable Next button
   useEffect(() => {
     if (skillsList) {
       setResumeContent({ ...resumeContent, skills: skillsList });
@@ -55,7 +51,6 @@ function Skills({ setIsNextEnabled }) {
     }
   }, [skillsList, setIsNextEnabled]);
 
-  //* Save to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
     const hasEmptyFields = skillsList.some((skill) =>
@@ -85,6 +80,7 @@ function Skills({ setIsNextEnabled }) {
       setLoading(false);
     }
   };
+
   if (!skillsList) return null;
 
   return (
@@ -96,10 +92,10 @@ function Skills({ setIsNextEnabled }) {
         {skillsList.map((skill, index) => (
           <div
             key={index}
-            className="grid grid-cols-2 gap-3 p-4 my-4 rounded-lg border border-gray-200"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 my-4 rounded-lg border border-gray-200"
           >
             <div>
-              <label>Skill Name</label>
+              <label className="text-sm font-medium">Skill Name</label>
               <Input
                 name="name"
                 value={skill.name}
@@ -107,7 +103,9 @@ function Skills({ setIsNextEnabled }) {
               />
             </div>
             <div>
-              <label>Progress (out of 100)</label>
+              <label className="text-sm font-medium">
+                Progress (out of 100)
+              </label>
               <Input
                 name="rating"
                 value={skill.rating}
@@ -117,8 +115,8 @@ function Skills({ setIsNextEnabled }) {
           </div>
         ))}
 
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-4 gap-2 sm:gap-0">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Button type="button" onClick={addMoreSkills}>
               + Add More
             </Button>
@@ -126,7 +124,11 @@ function Skills({ setIsNextEnabled }) {
               - Remove
             </Button>
           </div>
-          <Button type="submit" disabled={loading}>
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full sm:w-auto bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED] font-body cursor-pointer hover:scale-107 active:scale-95 transition-all text-white font-[400px]"
+          >
             {loading ? <LoaderCircle className="animate-spin" /> : "Save"}
           </Button>
         </div>

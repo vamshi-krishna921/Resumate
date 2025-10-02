@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ResumeContext } from "@/contextApi/ResumeContext";
 import React, { useContext, useEffect, useState } from "react";
-import { data, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { updateResume } from "./../../../../../../../service/GlobalAPIs";
 import { Brain, LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -35,7 +35,6 @@ function Summary({ setIsNextEnabled }) {
       const data = await res.json();
       const generatedSummary = data.text || "";
 
-      // Update both local state and context
       setSummary(generatedSummary);
       setResumeContent({ ...resumeContent, summary: generatedSummary });
     } catch (err) {
@@ -45,23 +44,18 @@ function Summary({ setIsNextEnabled }) {
     }
   };
 
-  //* UseEffect
   useEffect(() => {
     if (resumeContent?.summary) {
       setSummary(resumeContent.summary);
     }
   }, [resumeContent]);
 
-  //* Handle Summary Change
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      data: { summary: summary },
-    };
+    const data = { data: { summary: summary } };
     setLoading(true);
     updateResume(params?.resumeId, data)
       .then((res) => {
-        console.log(res);
         setIsNextEnabled(true);
         setLoading(false);
         toast("Data has been added. ✅");
@@ -71,27 +65,30 @@ function Summary({ setIsNextEnabled }) {
         setLoading(false);
       });
   };
+
   return (
     <div className="p-5 shadow-lg rounded-lg border-t-4 mt-3 border-blue-900">
       <h2 className="text-lg font-bold">Summary</h2>
       <p className="text-sm text-gray-600 mb-3">Add summary for your job</p>
-      <form className="mt-5" onSubmit={handleSubmit}>
-        <div className="flex items-end justify-between">
+
+      <form className="mt-5 space-y-4" onSubmit={handleSubmit}>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
           <label htmlFor="summary" className="text-sm font-bold">
             Add Summary
           </label>
           <Button
             size="sm"
             type="button"
-            onClick={() => generateSummarayUsingAi()}
+            onClick={generateSummarayUsingAi}
+            className="whitespace-nowrap bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED] font-body cursor-pointer hover:scale-107 active:scale-95 transition-all text-white font-[400px]"
           >
-            {" "}
-            <Brain />
+            <Brain className="mr-1" />
             Generating using AI
           </Button>
         </div>
+
         <Textarea
-          className="mt-4"
+          className="mt-2"
           value={summary || ""}
           onChange={(e) => {
             setSummary(e.target.value);
@@ -100,8 +97,8 @@ function Summary({ setIsNextEnabled }) {
           required
         />
 
-        <div className="col-span-2 flex justify-end mt-3">
-          <Button disable={loading} type="submit">
+        <div className="flex justify-end mt-3">
+          <Button disabled={loading} type="submit">
             {loading ? <LoaderCircle className="animate-spin" /> : "Save"}
           </Button>
         </div>

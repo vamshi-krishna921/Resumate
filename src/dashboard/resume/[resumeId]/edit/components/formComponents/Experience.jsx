@@ -25,7 +25,6 @@ function Experience({ setIsNextEnabled }) {
   const [loading, setLoading] = useState(false);
   const params = useParams();
 
-  //* Initialize experience list from Strapi
   useEffect(() => {
     if (resumeContent?.Experience && experienceList === null) {
       setExperienceList(resumeContent.Experience);
@@ -34,7 +33,6 @@ function Experience({ setIsNextEnabled }) {
     }
   }, []);
 
-  //* Handle input change
   const handleChange = (index, e) => {
     const { name, value } = e.target;
     const updatedList = [...experienceList];
@@ -49,7 +47,6 @@ function Experience({ setIsNextEnabled }) {
     setIsNextEnabled(hasData);
   };
 
-  //* Generate AI work summary
   const generateWorkSummary = async (index) => {
     setLoadingIndex(index);
     try {
@@ -81,7 +78,6 @@ function Experience({ setIsNextEnabled }) {
     }
   };
 
-  //* Add / Remove experience forms
   const addMoreExperience = () =>
     setExperienceList([...experienceList, { ...formFields }]);
 
@@ -98,7 +94,6 @@ function Experience({ setIsNextEnabled }) {
     }
   };
 
-  //* Submit experience to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!experienceList) return;
@@ -150,10 +145,10 @@ function Experience({ setIsNextEnabled }) {
         {experienceList.map((experience, index) => (
           <div
             key={index}
-            className="grid grid-cols-2 gap-3 p-4 my-4 rounded-lg border border-gray-200"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 my-4 rounded-lg border border-gray-200"
           >
-            <div className="mt-3">
-              <label>Position Title</label>
+            <div>
+              <label className="text-sm font-medium">Position Title</label>
               <Input
                 name="title"
                 value={experience.title}
@@ -161,8 +156,8 @@ function Experience({ setIsNextEnabled }) {
               />
             </div>
 
-            <div className="mt-3">
-              <label>Company Name</label>
+            <div>
+              <label className="text-sm font-medium">Company Name</label>
               <Input
                 name="companyName"
                 value={experience.companyName}
@@ -170,8 +165,8 @@ function Experience({ setIsNextEnabled }) {
               />
             </div>
 
-            <div className="mt-3">
-              <label>City</label>
+            <div>
+              <label className="text-sm font-medium">City</label>
               <Input
                 name="city"
                 value={experience.city}
@@ -179,8 +174,8 @@ function Experience({ setIsNextEnabled }) {
               />
             </div>
 
-            <div className="mt-3">
-              <label>State</label>
+            <div>
+              <label className="text-sm font-medium">State</label>
               <Input
                 name="state"
                 value={experience.state}
@@ -188,8 +183,8 @@ function Experience({ setIsNextEnabled }) {
               />
             </div>
 
-            <div className="mt-3">
-              <label>Start Date</label>
+            <div>
+              <label className="text-sm font-medium">Start Date</label>
               <Input
                 type="date"
                 name="startDate"
@@ -198,8 +193,8 @@ function Experience({ setIsNextEnabled }) {
               />
             </div>
 
-            <div className="mt-3">
-              <label>End Date</label>
+            <div>
+              <label className="text-sm font-medium">End Date</label>
               <Input
                 name="endDate"
                 placeholder="currently working add present"
@@ -208,9 +203,9 @@ function Experience({ setIsNextEnabled }) {
               />
             </div>
 
-            <div className="col-span-2 mt-3 flex flex-col gap-2">
-              <label>Work Summary</label>
-              <div className="flex gap-2">
+            <div className="col-span-1 sm:col-span-2 flex flex-col gap-2">
+              <label className="text-sm font-medium">Work Summary</label>
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Textarea
                   name="workSummery"
                   value={experience.workSummery}
@@ -221,6 +216,7 @@ function Experience({ setIsNextEnabled }) {
                   type="button"
                   onClick={() => generateWorkSummary(index)}
                   disabled={loadingIndex === index}
+                  className="whitespace-nowrap bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED] font-body cursor-pointer hover:scale-107 active:scale-95 transition-all text-white font-[400px]"
                 >
                   {loadingIndex === index ? (
                     <LoaderCircle className="animate-spin" />
@@ -233,8 +229,8 @@ function Experience({ setIsNextEnabled }) {
           </div>
         ))}
 
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-4 gap-2 sm:gap-0">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Button type="button" onClick={addMoreExperience}>
               + Add More Experience
             </Button>
@@ -242,7 +238,7 @@ function Experience({ setIsNextEnabled }) {
               - Remove Experience
             </Button>
           </div>
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" disabled={loading} className="w-full sm:w-auto bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED] font-body cursor-pointer hover:scale-107 active:scale-95 transition-all text-white font-[400px]">
             {loading ? <LoaderCircle className="animate-spin" /> : "Save"}
           </Button>
         </div>

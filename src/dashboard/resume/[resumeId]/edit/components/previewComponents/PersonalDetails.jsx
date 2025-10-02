@@ -24,24 +24,24 @@ function PersonalDetails({ resumeContent }) {
 
   return (
     <>
-      {/* Personal Details Top section */}
-      <div className="font-resume my-4">
-        <h1 className="font-bold text-xl text-center">
+      <div className="font-resume my-4 px-2 print:px-0">
+        <h1 className="font-bold text-lg sm:text-xl print:text-xl text-center break-words">
           {resumeContent?.firstName} {resumeContent?.lastName}
         </h1>
-        <h2 className="text-center text-md font-semibold">
+        <h2 className="text-center text-sm sm:text-md print:text-md font-semibold break-words">
           {resumeContent?.jobTitle}
         </h2>
-        <h2 className="text-center text-md">{resumeContent?.address}</h2>
+        <h2 className="text-center text-sm sm:text-md print:text-md break-words">
+          {resumeContent?.address}
+        </h2>
       </div>
 
-      {/* Personal Details Bottom section */}
       <div
-        className={`mt-4 grid gap-1 font-resume
-        ${contactDetails.length === 2 ? "grid-cols-2" : ""}
-        ${contactDetails.length === 3 ? "grid-cols-3" : ""}
-        ${contactDetails.length === 4 ? "grid-cols-2" : ""}
-        ${contactDetails.length >= 5 ? "grid-cols-3" : ""}`}
+        className={`mt-4 grid gap-1 font-resume px-2 print:px-0 text-center
+        ${contactDetails.length === 2 ? "grid-cols-1 sm:grid-cols-2" : ""}
+        ${contactDetails.length === 3 ? "grid-cols-1 sm:grid-cols-3" : ""}
+        ${contactDetails.length === 4 ? "grid-cols-1 sm:grid-cols-2" : ""}
+        ${contactDetails.length >= 5 ? "grid-cols-1 sm:grid-cols-3" : ""}`}
       >
         {contactDetails.map((item, index) => (
           <a
@@ -49,12 +49,13 @@ function PersonalDetails({ resumeContent }) {
             href={item.href}
             target={item.href.startsWith("http") ? "_blank" : "_self"}
             rel="noopener noreferrer"
-            className="text-xs font-normal hover:underline cursor-pointer text-blue-500 text-center"
+            className="text-[10px] sm:text-xs print:text-xs font-normal hover:underline cursor-pointer text-blue-500 whitespace-normal break-words print:whitespace-nowrap"
           >
             {item.label}
           </a>
         ))}
       </div>
+
       <hr className="border-2 border-[#4e4e4e] my-2" />
     </>
   );

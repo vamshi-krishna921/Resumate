@@ -25,4 +25,5 @@ export const getResumeById = (docId) =>
 export const updateResume = (id, data) =>
   axiosInstance.put(`/resumes/` + id, data);
 
+export const deleteResumeById = (id) => axiosInstance.delete(`/resumes/` + id);
 export default axiosInstance;

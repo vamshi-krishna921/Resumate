@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import resumeIcon from "../../assets/resumeIcon.png";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -7,9 +7,36 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { deleteResumeById } from "../../../service/GlobalAPIs";
+import { toast } from "sonner";
 
 function PrevResumes({ resume }) {
   const navigate = useNavigate();
+  const [deleteAlertOpen, setDeleteAlertOpen] = useState(false);
+
+  async function deleteResume() {
+    try {
+      await deleteResumeById(resume.documentId);
+      toast.success("Resume deleted successfully ✅");
+      setDeleteAlertOpen(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
+    } catch (err) {
+      toast.error("Failed to delete resume ❌");
+    }
+  }
+
   return (
     <div className="relative w-[288px] h-[400px]">
       <Link to={`/dashboard/resume/${resume.documentId}/edit`}>
@@ -21,11 +48,11 @@ function PrevResumes({ resume }) {
         </div>
       </Link>
 
-      {/* Dropdown in bottom-left corner */}
+      {/* Dropdown in top-right corner */}
       <div className="absolute top-2 right-2">
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <button className="p-2 rounded bg-gray-100  transition-transform duration-150 ease-in hover:scale-109 cursor-pointer text-3xl ">
+            <button className="p-2 rounded bg-gray-100 transition-transform duration-150 ease-in hover:scale-109 cursor-pointer text-3xl">
               ⋮
             </button>
           </DropdownMenuTrigger>
@@ -37,13 +64,38 @@ function PrevResumes({ resume }) {
             >
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem  onClick={() =>
-                navigate(`/my-resume/${resume.documentId}/view`)
-              }>Download</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => navigate(`/my-resume/${resume.documentId}/view`)}
+            >
+              Download
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setDeleteAlertOpen(true)}>
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      {/* Alert */}
+      <AlertDialog open={deleteAlertOpen} onOpenChange={setDeleteAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete your
+              resume and remove its data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeleteAlertOpen(false)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={deleteResume}>
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

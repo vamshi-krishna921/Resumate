@@ -85,53 +85,59 @@ function Home() {
         </section>
 
         {/* About me */}
-        <h1 className="text-3xl font-bold underline mt-8 text-center">Founder</h1>
-        <section className="flex flex-col md:flex-row items-center justify-between px-8 md:px-20 py-16 gap-10 bg-white">
-          <div className="flex-1 text-center md:text-left">
-            <h2 className="text-3xl font-bold mb-4">Hi, I'm Vamshi Krishna</h2>
-            <p className="text-gray-500 mb-4 text-lg">
-              Hey, I’m Vamshi 👋 I enjoy turning ideas into clean and responsive
-              web experiences that people actually love to use. Most of my time
-              goes into experimenting with modern tools, polishing small
-              details, and learning something new every day. I’m especially
-              excited about building intuitive UIs that feel simple, fast, and a
-              little bit fun.
-            </p>
+        <section className="px-8 md:px-20 py-16 bg-white">
+          <h1 className="text-3xl font-bold underline text-center mt-8 mb-12">
+            Founder
+          </h1>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-10">
+            <div className="flex-1 text-center md:text-left">
+              <h2 className="text-3xl font-bold mb-4">
+                Hi, I'm Vamshi Krishna
+              </h2>
+              <p className="text-gray-500 mb-4 text-lg">
+                Hey, I’m Vamshi 👋 I enjoy turning ideas into clean and
+                responsive web experiences that people actually love to use.
+                Most of my time goes into experimenting with modern tools,
+                polishing small details, and learning something new every day.
+                I’m especially excited about building intuitive UIs that feel
+                simple, fast, and a little bit fun.
+              </p>
 
-            <div className="flex justify-center md:justify-start gap-6 text-2xl">
-              <a
-                href="https://www.linkedin.com/in/vamshikrishna-kalluri921"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-full p-4 shadow shadow-gray-400 transition hover:shadow-lg"
-              >
-                <FaLinkedin className="text-gray-700 transition group-hover:text-blue-600" />
-              </a>
-              <a
-                href="https://github.com/vamshi-krishna921"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-full p-4 shadow shadow-gray-400 transition hover:shadow-lg"
-              >
-                <FaGithub className="text-gray-700 transition group-hover:text-black" />
-              </a>
-              <a
-                href="https://www.instagram.com/vamshi_krishna921"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-full p-4 shadow shadow-gray-400 transition hover:shadow-lg"
-              >
-                <FaInstagram className="text-gray-700 transition group-hover:text-pink-500" />
-              </a>
+              <div className="flex justify-center md:justify-start gap-6 text-2xl">
+                <a
+                  href="https://www.linkedin.com/in/vamshikrishna-kalluri921"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group rounded-full p-4 shadow shadow-gray-400 transition hover:shadow-lg"
+                >
+                  <FaLinkedin className="text-gray-700 transition group-hover:text-blue-600" />
+                </a>
+                <a
+                  href="https://github.com/vamshi-krishna921"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group rounded-full p-4 shadow shadow-gray-400 transition hover:shadow-lg"
+                >
+                  <FaGithub className="text-gray-700 transition group-hover:text-black" />
+                </a>
+                <a
+                  href="https://www.instagram.com/vamshi_krishna921"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group rounded-full p-4 shadow shadow-gray-400 transition hover:shadow-lg"
+                >
+                  <FaInstagram className="text-gray-700 transition group-hover:text-pink-500" />
+                </a>
+              </div>
             </div>
-          </div>
 
-          <div className="flex-1 flex justify-center md:justify-end">
-            <img
-              src="/Profile.jpeg"
-              alt="Vamshi Krishna"
-              className="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover shadow-lg"
-            />
+            <div className="flex-1 flex justify-center md:justify-end">
+              <img
+                src="/Profile.jpeg"
+                alt="Vamshi Krishna"
+                className="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover shadow-lg"
+              />
+            </div>
           </div>
         </section>
 

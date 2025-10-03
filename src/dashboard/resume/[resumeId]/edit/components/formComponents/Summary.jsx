@@ -27,7 +27,10 @@ function Summary({ setIsNextEnabled }) {
         `${import.meta.env.VITE_STRAPI_URL}/api/generate-summary`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_STRAPI_API_KEY}`,
+          },
           body: JSON.stringify({ prompt: PROMPT }),
         }
       );

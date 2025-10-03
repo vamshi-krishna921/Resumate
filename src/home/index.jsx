@@ -85,8 +85,8 @@ function Home() {
         </section>
 
         {/* About me */}
+        <h1 className="text-3xl font-bold underline mt-8 text-center">Founder</h1>
         <section className="flex flex-col md:flex-row items-center justify-between px-8 md:px-20 py-16 gap-10 bg-white">
-          <h1 className="text-3xl font-bold underline">Founder</h1>
           <div className="flex-1 text-center md:text-left">
             <h2 className="text-3xl font-bold mb-4">Hi, I'm Vamshi Krishna</h2>
             <p className="text-gray-500 mb-4 text-lg">

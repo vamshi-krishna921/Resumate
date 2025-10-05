@@ -5,7 +5,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { ResumeContext } from "@/contextApi/ResumeContext";
 import { useParams } from "react-router-dom";
 import { updateResume } from "./../../../../../../../service/GlobalAPIs";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Brain } from "lucide-react";
 import { toast } from "sonner";
 
 const formFields = {
@@ -19,6 +19,7 @@ function Projects({ setIsNextEnabled }) {
   const [projectsList, setProjectsList] = useState(null);
   const { resumeContent, setResumeContent } = useContext(ResumeContext);
   const [loading, setLoading] = useState(false);
+  const [aiLoadingIndex, setAiLoadingIndex] = useState(null); // Track which project is generating
   const params = useParams();
 
   useEffect(() => {
@@ -54,6 +55,47 @@ function Projects({ setIsNextEnabled }) {
       setIsNextEnabled(hasData);
     }
   }, [projectsList, setIsNextEnabled]);
+
+  //* AI description generation
+  const generateDescriptionUsingAI = async (index) => {
+    const project = projectsList[index];
+    if (!project.title) {
+      toast("Please enter a project title first ❌");
+      return;
+    }
+
+    const prompt = `Project title: ${project.title}. Generate a short professional description (3-4 lines) describing the project's purpose, tech stack, and impact. Use clear, resume-friendly language.`;
+
+    setAiLoadingIndex(index);
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_STRAPI_URL}/api/generate-summary`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_STRAPI_API_KEY}`,
+          },
+          body: JSON.stringify({ prompt }),
+        }
+      );
+
+      const data = await res.json();
+      const generatedDescription = data.text || "";
+
+      const updatedList = [...projectsList];
+      updatedList[index].description = generatedDescription;
+      setProjectsList(updatedList);
+      setResumeContent({ ...resumeContent, projects: updatedList });
+
+      toast("Description generated successfully ✅");
+    } catch (err) {
+      console.error(err);
+      toast("Failed to generate description ❌");
+    } finally {
+      setAiLoadingIndex(null);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -111,13 +153,31 @@ function Projects({ setIsNextEnabled }) {
               />
             </div>
 
-            <div>
-              <label className="text-sm font-medium">Description</label>
+            <div className="relative">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium">Description</label>
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={() => generateDescriptionUsingAI(index)}
+                  disabled={aiLoadingIndex === index}
+                  className="bg-gradient-to-br from-[#00203F] via-[#3B2F72] to-[#7C3AED] hover:scale-105 text-white transition-all"
+                >
+                  {aiLoadingIndex === index ? (
+                    <LoaderCircle className="animate-spin w-4 h-4 mr-1" />
+                  ) : (
+                    <Brain className="w-4 h-4 mr-1" />
+                  )}
+                  Generate with AI
+                </Button>
+              </div>
+
               <Textarea
                 placeholder="Describe through points"
                 name="description"
                 value={project.description}
                 onChange={(e) => handleChange(index, e)}
+                className="mt-1"
               />
             </div>
 

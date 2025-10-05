@@ -19,7 +19,7 @@ function Projects({ setIsNextEnabled }) {
   const [projectsList, setProjectsList] = useState(null);
   const { resumeContent, setResumeContent } = useContext(ResumeContext);
   const [loading, setLoading] = useState(false);
-  const [aiLoadingIndex, setAiLoadingIndex] = useState(null); // Track which project is generating
+  const [aiLoadingIndex, setAiLoadingIndex] = useState(null);
   const params = useParams();
 
   useEffect(() => {
@@ -64,7 +64,7 @@ function Projects({ setIsNextEnabled }) {
       return;
     }
 
-    const prompt = `Project title: ${project.title}. Generate a short professional description (3-4 lines) describing the project's purpose, tech stack, and impact. Use clear, resume-friendly language.`;
+    const prompt = `Project title: ${project.title}. Generate a short professional description (3-4 lines) describing the project's purpose, tech stack, and impact. Use clear, resume-friendly language. Give in description no bold no points.`;
 
     setAiLoadingIndex(index);
     try {

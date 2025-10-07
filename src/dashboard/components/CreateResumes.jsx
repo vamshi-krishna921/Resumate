@@ -74,7 +74,7 @@ function CreateResumes() {
             <DialogTitle>Create your new resume</DialogTitle>
             <DialogDescription>
               <div className="text-lg text-start font-semibold font-body">
-                Enter title
+                Enter job title/name
               </div>
               <Input
                 placeholder="Ex: Frontend resume"

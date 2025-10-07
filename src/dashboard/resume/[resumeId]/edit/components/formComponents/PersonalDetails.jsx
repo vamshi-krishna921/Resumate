@@ -134,7 +134,7 @@ function PersonalDetails({ setIsNextEnabled }) {
         {/* LinkedIn */}
         <div>
           <label className="text-sm text-black" htmlFor="linkedin">
-            LinkedIn
+            LinkedIn (Optional)
           </label>
           <Input
             name="linkedin"
@@ -146,7 +146,7 @@ function PersonalDetails({ setIsNextEnabled }) {
         {/* GitHub */}
         <div>
           <label className="text-sm text-black" htmlFor="github">
-            GitHub
+            GitHub (Optional)
           </label>
           <Input
             name="github"
